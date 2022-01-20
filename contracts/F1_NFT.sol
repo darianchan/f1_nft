@@ -15,9 +15,7 @@ contract F1_NFT is ERC721 {
     mapping(address => bool) whiteListAddresses;
     uint public tokenID;
 
-
-    // TODO: can you put numbers in as the symbol name?
-    constructor(uint _whiteListPrice, uint _mainSalePrice) ERC721("f1", "f1") {
+    constructor(uint _whiteListPrice, uint _mainSalePrice) ERC721("f1_DAO", "f1") {
       owner = msg.sender; // owner will most likely be the multisig wallet that deploys this contract
       whiteListPrice = _whiteListPrice;
       mainSalePrice = _mainSalePrice;
@@ -41,7 +39,10 @@ contract F1_NFT is ERC721 {
     function whiteListMint(uint nftAmountToMint) public payable {
       checkWhiteListRequirements(nftAmountToMint, msg.value, msg.sender);
       tokenID++;
-      _mint(msg.sender, tokenID); // look into using safemint here
+
+      for (uint i=0; i<nftAmountToMint; i++) {
+        _mint(msg.sender, tokenID); // look into using safemint here
+      }
     }
 
     // ------------------------ //
@@ -51,7 +52,10 @@ contract F1_NFT is ERC721 {
     function mainSaleMint(uint nftAmountToMint) public payable {
       checkWhiteListRequirements(nftAmountToMint, msg.value, msg.sender);
       tokenID++;
-      _mint(msg.sender, tokenID);
+
+      for (uint i=0; i<nftAmountToMint; i++) {
+        _mint(msg.sender, tokenID); // look into using safemint here
+      }
     }
 
     // -----------  //
