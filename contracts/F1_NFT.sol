@@ -12,7 +12,7 @@ contract F1_NFT is ERC721 {
     // note: we dont put a hard limit on the total nfts because want ability to create 1 of 1 for influencers
     uint constant public WHITELIST_NFT_LIMIT = 1000; // TODO: placeholder for now  
     uint constant public MAIN_SALE_NFT_LIMIT = 9500; // 500 nfts reserved for the team + marketing
-    mapping(address => bool) whiteListAddresses;
+    mapping(address => bool) public whiteListAddresses;
     uint public tokenID;
 
     constructor(uint _whiteListPrice, uint _mainSalePrice) ERC721("f1_DAO", "f1") {
