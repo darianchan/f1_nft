@@ -10,13 +10,13 @@ contract F1_NFT is ERC721 {
     uint public whiteListPrice;
     uint public mainSalePrice;
     // note: we dont put a hard limit on the total nfts because want ability to create 1 of 1 for influencers
-    uint constant public WHITELIST_NFT_LIMIT = 1000; // TODO: placeholder for now  
+    uint constant public WHITELIST_NFT_LIMIT = 500; // TODO: placeholder for now  
     uint constant public MAIN_SALE_NFT_LIMIT = 9500; // 500 nfts reserved for the team + marketing
     mapping(address => bool) public whiteListAddresses;
     uint public tokenID;
 
     constructor(uint _whiteListPrice, uint _mainSalePrice) ERC721("f1_DAO", "f1") {
-      owner = msg.sender; // owner will most likely be the multisig wallet that deploys this contract
+      owner = msg.sender;
       whiteListPrice = _whiteListPrice;
       mainSalePrice = _mainSalePrice;
     }
@@ -82,11 +82,6 @@ contract F1_NFT is ERC721 {
 
       // TODO: may have to change this if you are allowed 5 from the pre sale + 8 from main sale. Would change to 13
       require(IERC721(address(this)).balanceOf(user) <= MAX_MAIN_MINT_AMOUNT, "max amount you can have is 8 nfts during main sale");
-    }
-
-    // in case you want to change the price of the whitelist - would rather just have it set in constructor and get rid of this
-    function setWhiteListPrice(uint price) public onlyOwner {
-      whiteListPrice = price;
     }
 
     // useful if all 10k doesn't sell out and then you want to lower the price
