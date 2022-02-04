@@ -53,18 +53,18 @@ task("mint", "mint Formula 1 NFT", async(taskArgs, hre) => {
 })
 
 module.exports = {
-  solidity: "0.8.9",
-   defaultNetwork: "rinkeby",
-   networks: {
-       hardhat: {
-         chainId: 1337
-       },
-       rinkeby: {
-         url: API_URL,
-         accounts: [`0x${PRIVATE_KEY}`]
-       }
-   },
-   etherscan: {
-     apiKey: API_KEY,
-   }
+  solidity: "0.8.9"
+  //  defaultNetwork: "rinkeby",
+  //  networks: {
+  //      hardhat: {
+  //        chainId: 1337
+  //      },
+  //      rinkeby: {
+  //        url: API_URL,
+  //        accounts: [`0x${PRIVATE_KEY}`]
+  //      }
+  //  },
+  //  etherscan: {
+  //    apiKey: API_KEY,
+  //  }
 };
