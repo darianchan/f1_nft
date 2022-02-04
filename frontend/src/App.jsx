@@ -1,9 +1,10 @@
 import './App.css';
+import MintSection from './MintSection';
 
 function App() {
   return (
-    <div className="App">
-      react is up and running
+    <div>
+      <MintSection />
     </div>
   );
 }
