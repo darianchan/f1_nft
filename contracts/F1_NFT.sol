@@ -2,6 +2,7 @@
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract F1_NFT is ERC721 {
     address public owner;
@@ -51,10 +52,10 @@ contract F1_NFT is ERC721 {
 
     function mainSaleMint(uint nftAmountToMint) public payable {
       checkWhiteListRequirements(nftAmountToMint, msg.value, msg.sender);
-      tokenID++;
-
       for (uint i=0; i<nftAmountToMint; i++) {
         _mint(msg.sender, tokenID); // look into using safemint here
+        string memory f1NFTURI = tokenURI(tokenID);
+        tokenID++;
       }
     }
 
@@ -87,5 +88,9 @@ contract F1_NFT is ERC721 {
     // useful if all 10k doesn't sell out and then you want to lower the price
     function setMainSalePrice(uint price) public onlyOwner {
       mainSalePrice = price;
+    }
+
+    function _baseURI() internal view virtual override returns (string memory) {
+      return "ipfs://f1-nft/";
     }
 }
