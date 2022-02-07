@@ -42,7 +42,7 @@ contract F1_NFT is ERC721 {
       tokenID++;
 
       for (uint i=0; i<nftAmountToMint; i++) {
-        _mint(msg.sender, tokenID); // look into using safemint here
+        _mint(msg.sender, tokenID);
       }
     }
 
@@ -53,7 +53,7 @@ contract F1_NFT is ERC721 {
     function mainSaleMint(uint nftAmountToMint) public payable {
       checkWhiteListRequirements(nftAmountToMint, msg.value, msg.sender);
       for (uint i=0; i<nftAmountToMint; i++) {
-        _mint(msg.sender, tokenID); // look into using safemint here
+        _mint(msg.sender, tokenID);
         string memory f1NFTURI = tokenURI(tokenID);
         tokenID++;
       }

@@ -18,22 +18,12 @@ task("deploy", "Deploy the smart contracts", async(taskArgs, hre) => {
 
   const accounts = await hre.ethers.getSigners();
   const F1_NFT = await hre.ethers.getContractFactory("F1_NFT");
-  const f1_NFT = await F1_NFT.deploy(5, 10);
+  const f1_NFT = await F1_NFT.deploy(1, 2);
 
   await f1_NFT.deployed();
 
   console.log("Deployed");
   console.log("Address: ", f1_NFT.address);
-  // await hre.run("verify:verify", {
-  //   address: f1_NFT.address,
-  //   constructorArguments: [
-  //     5, 
-  //     10
-  //   ]
-  // })
-  await f1_NFT.addToWhiteList(['0x3e6a2B9D58314D81234465eE778CF2794dA4E430'])
-  await f1_NFT.mainSaleMint(1, {value: ethers.utils.parseEther("10")});
-  console.log("minted...")
 })
 
 task("mint", "mint Formula 1 NFT", async(taskArgs, hre) => {
@@ -53,18 +43,18 @@ task("mint", "mint Formula 1 NFT", async(taskArgs, hre) => {
 })
 
 module.exports = {
-  solidity: "0.8.9"
-  //  defaultNetwork: "rinkeby",
-  //  networks: {
-  //      hardhat: {
-  //        chainId: 1337
-  //      },
-  //      rinkeby: {
-  //        url: API_URL,
-  //        accounts: [`0x${PRIVATE_KEY}`]
-  //      }
-  //  },
-  //  etherscan: {
-  //    apiKey: API_KEY,
-  //  }
+  solidity: "0.8.9",
+   defaultNetwork: "rinkeby",
+   networks: {
+       hardhat: {
+         chainId: 1337
+       },
+       rinkeby: {
+         url: API_URL,
+         accounts: [`0x${PRIVATE_KEY}`]
+       }
+   },
+   etherscan: {
+     apiKey: API_KEY,
+   }
 };

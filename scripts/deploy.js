@@ -3,7 +3,7 @@ const { ethers } = require("hardhat");
 async function main() {
   // deploy the coveredCall contract
   const f1_nftFactory = await ethers.getContractFactory("F1_NFT")
-  const f1_nft = await f1_nftFactory.deploy(5, 10)
+  const f1_nft = await f1_nftFactory.deploy(ethers.utils.parseEther(".1"), ethers.utils.parseEther(".2"))
   console.log("test nft deployed to:", f1_nft.address);
   
 }
