@@ -1,6 +1,7 @@
 require("@nomiclabs/hardhat-waffle");
-//require("@nomiclabs/hardhat-etherscan")
 require("dotenv").config();
+require("@nomiclabs/hardhat-etherscan");
+
 
 const API_URL = process.env.API_URL; //"https://eth-rinkeby.alchemyapi.io/v2/HxjGSnh4Ap-GC8Hmglhof_LiZV7YMh-r"
 const API_KEY = process.env.API_KEY; // "HxjGSnh4Ap-GC8Hmglhof_LiZV7YMh-r"
