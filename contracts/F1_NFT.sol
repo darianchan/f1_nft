@@ -18,8 +18,12 @@ contract F1_NFT is ERC721 {
     uint256 public constant WHITELIST_NFT_LIMIT = 500; // TODO: placeholder for now
     uint256 public constant MAIN_SALE_NFT_LIMIT = 9500; // 500 nfts reserved for the team + marketing
     mapping(address => bool) public whiteListAddresses;
+    mapping(address => uint256) public addressTokenCount;
     mapping(uint256 => string) public uriMap;
     uint256 public tokenID;
+
+    enum Phases {Pre, Whitelist, Main, End} 
+    Phases phase; 
 
     constructor(
         uint256 _whiteListPrice,
@@ -30,12 +34,15 @@ contract F1_NFT is ERC721 {
         whiteListPrice = _whiteListPrice;
         mainSalePrice = _mainSalePrice;
         setBaseURI(_newBaseURI);
-        mainSaleMint(10); // TODO: test mint 10 to wallet
     }
 
     modifier onlyOwner() {
         require(msg.sender == owner, "only owner can perform this action");
         _;
+    }
+
+    function advancePhase() public onlyOwner {
+      phase = Phases(uint(phase) + 1);
     }
 
     // ------------------------ //
@@ -48,25 +55,19 @@ contract F1_NFT is ERC721 {
         }
     }
 
-    function whiteListMint(uint256 nftAmountToMint) public payable {
+
+    function mint(uint256 nftAmountToMint) public payable {
+      require(phase != Phases.Pre, "Minting is not open");
+      require(phase != Phases.End, "Minting is closed");
+      if (phase == Phases.Whitelist) {
         checkWhiteListRequirements(nftAmountToMint, msg.value, msg.sender);
-
-        for (uint256 i = 0; i < nftAmountToMint; i++) {
-            _mint(msg.sender, tokenID);
-            tokenID++;
-        }
-    }
-
-    // ------------------------ //
-    //  MAIN SALE FUNCTIONALITY //
-    // -----------------------  //
-
-    function mainSaleMint(uint256 nftAmountToMint) public payable {
-        // checkWhiteListRequirements(nftAmountToMint, msg.value, msg.sender); TODO: add back in - just commented out for testing purposes
-        for (uint256 i = 0; i < nftAmountToMint; i++) {
-            _mint(msg.sender, tokenID);
-            tokenID++;
-        }
+      }
+      for (uint256 i = 0; i < nftAmountToMint; i++) {
+          _mint(msg.sender, tokenID);
+          uriMap[tokenID] = tokenURI(tokenID);
+          addressTokenCount[msg.sender]++;
+          tokenID++;
+      }
     }
 
     // -----------  //
@@ -78,10 +79,12 @@ contract F1_NFT is ERC721 {
         uint256 amountETHSent,
         address user
     ) private view {
+        require(phase == Phases.Whitelist, "Mint not in Whitelist phase");
         require(
             whiteListAddresses[user] == true,
             "user address is not on whitelist"
         );
+        require(addressTokenCount[user] + nftAmountToMint >= 5, "Account Address reached limit on Tokens");
 
         // TODO: might have to change this if we do a batch mint instead (look into azuki erc721a standard).
         // whiteListMint would only get called once rather than called everytime 1 nft gets minted
@@ -138,18 +141,12 @@ contract F1_NFT is ERC721 {
         baseURI = _newBaseURI;
     }
 
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        virtual
-        override
-        returns (string memory)
+    function tokenURI(uint256 tokenId) public view virtual override returns (string memory)
     {
         require(
             _exists(tokenId),
             "ERC721Metadata: URI query for nonexistent token"
         );
-
         string memory currentBaseURI = _baseURI();
         return
             bytes(currentBaseURI).length > 0
