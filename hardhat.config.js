@@ -2,9 +2,9 @@ require("@nomiclabs/hardhat-waffle");
 //require("@nomiclabs/hardhat-etherscan")
 require("dotenv").config();
 
-const API_URL = "https://eth-rinkeby.alchemyapi.io/v2/HxjGSnh4Ap-GC8Hmglhof_LiZV7YMh-r"
-const API_KEY = "HxjGSnh4Ap-GC8Hmglhof_LiZV7YMh-r"
-const PRIVATE_KEY = "54c790c83fc83ef85898705a55063259616a3e42298ded11b9384df2172cbe9a"
+const API_URL = process.env.API_URL; //"https://eth-rinkeby.alchemyapi.io/v2/HxjGSnh4Ap-GC8Hmglhof_LiZV7YMh-r"
+const API_KEY = process.env.API_KEY; // "HxjGSnh4Ap-GC8Hmglhof_LiZV7YMh-r"
+const PRIVATE_KEY = process.env.PRIVATE_KEY; // "e21f8c319e5b39b5cebeea9a221817e909bf654944e11d00e5b16b779893cb8d"
 
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners();

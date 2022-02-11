@@ -4,7 +4,7 @@ import F1 from './F1_NFT.json';
 
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 const signer = provider.getSigner();
-const f1_nft = new ethers.Contract('0x35f08f89054AE17C25d190E4643DA98ea2D3aeF7', F1.abi, provider);
+const f1_nft = new ethers.Contract('0x96a8Ba0c177e8738b9751646c5e87E6516Bbb1c5', F1.abi, provider);
 
 class MintSection extends React.Component {
   constructor(props) {
@@ -31,7 +31,7 @@ class MintSection extends React.Component {
 
   // button to demo whitelist functionality
   async addToWhiteList() {
-    let tx = await f1_nft.connect(signer).addToWhiteList(['0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266']) // place holder address for demo
+    let tx = await f1_nft.connect(signer).addToWhiteList(['0x31306c03862D6F06193a3bAc8Ac9859A2fbea2d7']) // place holder address for demo
     let receipt = await tx.wait();
 
     if (receipt.status === 1) {
@@ -42,7 +42,7 @@ class MintSection extends React.Component {
   }
 
   async onMint() {
-    let tx = await f1_nft.connect(signer).whiteListMint(1, {value: ethers.utils.parseEther(".1")})
+    let tx = await f1_nft.connect(signer).whiteListMint(1, {value: ethers.utils.parseEther(".000000000001")})
     let receipt = await tx.wait();
 
     if (receipt.status === 1) {

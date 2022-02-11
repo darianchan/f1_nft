@@ -32,15 +32,30 @@ describe("F1_NFT", function() {
   
   
   describe("Main Sale Mint", async function() {
-    xit("should allow a whitelisted user to mint", async function() {
+    it("should allow a whitelisted user to mint", async function() {
       await f1_nft.addToWhiteList([accounts[0].address])
       await f1_nft.mainSaleMint(1, {value: ethers.utils.parseEther("10")});
-      let owner = await f1_nft.ownerOf(1)
+      let owner = await f1_nft.ownerOf(0)
       expect(owner).to.eq(accounts[0].address)
     })
 
     it("should not allow a user not on the whitelist to mint", async function() {
       await expect(f1_nft.mainSaleMint(1, {value: ethers.utils.parseEther("10")})).to.be.reverted;
     })
+  })
+
+
+  describe("IPFS Check", async function() {
+    it("should properly assign tokenURI ", async function() {
+      await f1_nft.addToWhiteList([accounts[0].address])
+      await f1_nft.mainSaleMint(1, {value: ethers.utils.parseEther("10")});
+      let owner = await f1_nft.ownerOf(0)
+      expect(owner).to.eq(accounts[0].address)
+      let uri = await f1_nft.getTokenURI(0);
+      let mapUri = await f1_nft.uriOf(0);
+      expect(uri).to.eq('ipfs://QmeaMoYkPYqQBHEkgrXibDcwp6Eo4VjEKWSzWBXQMNC7Cy/0.json');
+      expect(uri).to.eq(mapUri);
+    })
+
   })
 })

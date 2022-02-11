@@ -3,6 +3,7 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract F1_NFT is ERC721 {
     address public owner;
@@ -14,6 +15,7 @@ contract F1_NFT is ERC721 {
     uint constant public WHITELIST_NFT_LIMIT = 500; // TODO: placeholder for now  
     uint constant public MAIN_SALE_NFT_LIMIT = 9500; // 500 nfts reserved for the team + marketing
     mapping(address => bool) public whiteListAddresses;
+    mapping(uint => string) public uriMap; 
     uint public tokenID;
 
     constructor(uint _whiteListPrice, uint _mainSalePrice) ERC721("f1_DAO", "f1") {
@@ -39,10 +41,12 @@ contract F1_NFT is ERC721 {
 
     function whiteListMint(uint nftAmountToMint) public payable {
       checkWhiteListRequirements(nftAmountToMint, msg.value, msg.sender);
-      tokenID++;
 
       for (uint i=0; i<nftAmountToMint; i++) {
         _mint(msg.sender, tokenID);
+        string memory uri = getTokenURI(tokenID);
+        uriMap[tokenID] = uri;
+        tokenID++;
       }
     }
 
@@ -54,7 +58,8 @@ contract F1_NFT is ERC721 {
       checkWhiteListRequirements(nftAmountToMint, msg.value, msg.sender);
       for (uint i=0; i<nftAmountToMint; i++) {
         _mint(msg.sender, tokenID);
-        string memory f1NFTURI = tokenURI(tokenID);
+        string memory uri = getTokenURI(tokenID);
+        uriMap[tokenID] = uri;
         tokenID++;
       }
     }
@@ -91,6 +96,19 @@ contract F1_NFT is ERC721 {
     }
 
     function _baseURI() internal view virtual override returns (string memory) {
-      return "ipfs://f1-nft/";
+      return 'ipfs://QmeaMoYkPYqQBHEkgrXibDcwp6Eo4VjEKWSzWBXQMNC7Cy/';
+    }
+
+     /**
+     * @dev See {IERC721Metadata-tokenURI}.
+     */
+    function getTokenURI(uint256 tokenId) public view virtual returns (string memory) {
+        return string(abi.encodePacked(tokenURI(tokenId), ".json"));
+    }
+
+        function uriOf(uint256 tokenId) public view virtual returns (string memory) {
+        string memory uri = uriMap[tokenId];
+        require(abi.encodePacked(uri).length != 0, "URII: URI for nonexistent token");
+        return uri;
     }
 }
