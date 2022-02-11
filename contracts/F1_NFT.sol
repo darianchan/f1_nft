@@ -30,7 +30,7 @@ contract F1_NFT is ERC721 {
         whiteListPrice = _whiteListPrice;
         mainSalePrice = _mainSalePrice;
         setBaseURI(_newBaseURI);
-        mainSaleMint(10);
+        mainSaleMint(10); // TODO: test mint 10 to wallet
     }
 
     modifier onlyOwner() {
@@ -125,6 +125,10 @@ contract F1_NFT is ERC721 {
     function setMainSalePrice(uint256 price) public onlyOwner {
         mainSalePrice = price;
     }
+
+    // ----------------------------- //
+    //  IPFS/OPEANSEA FUNCTIONALITY //
+    // --------------------------  //
 
     function _baseURI() internal view virtual override returns (string memory) {
         return baseURI;
