@@ -19,8 +19,7 @@ task("deploy", "Deploy the smart contracts", async(taskArgs, hre) => {
 
   const accounts = await hre.ethers.getSigners();
   const F1_NFT = await hre.ethers.getContractFactory("F1_NFT");
-  const f1_NFT = await F1_NFT.deploy(1, 2);
-
+  const f1_NFT = await F1_NFT.deploy(1, 2, "ipfs://QmY3SBygbfzZo4TxsGER7ya5LfX7eiDKzRKzbnEDKGaLUz");
   await f1_NFT.deployed();
 
   console.log("Deployed");
@@ -39,7 +38,7 @@ task("mint", "mint Formula 1 NFT", async(taskArgs, hre) => {
 
   
   await f1_NFT.addToWhiteList(['0x3e6a2B9D58314D81234465eE778CF2794dA4E430'])
-  await f1_NFT.mainSaleMint(1, {value: ethers.utils.parseEther("10")});
+  await f1_NFT.mint(1, {value: ethers.utils.parseEther("0.0000000001")});
   console.log("minted...")
 })
 
