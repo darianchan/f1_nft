@@ -20,7 +20,7 @@ contract F1_NFT is ERC721 {
     mapping(address => bool) public whiteListAddresses;
     mapping(address => uint256) public addressTokenCount;
     mapping(uint256 => string) public uriMap;
-    uint256 public tokenID;
+    uint256 public tokenID = 1;
 
     enum Phases {Pre, Whitelist, Main, End} 
     Phases phase; 
